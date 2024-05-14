@@ -21,4 +21,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "Guidomia"
 include(":app")
- 
+include(":core")
