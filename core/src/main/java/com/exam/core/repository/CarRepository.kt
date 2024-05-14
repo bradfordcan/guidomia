@@ -10,6 +10,6 @@ class CarRepository(private val dataSource: CarDataSource) {
 
     suspend fun getAllCars() = dataSource.getAll()
 
-    suspend fun deleteCar(car: Car) = dataSource.remove(car)
+    suspend fun deleteCar(car: Car) = dataSource.delete(car)
 
 }

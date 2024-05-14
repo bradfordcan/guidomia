@@ -6,7 +6,7 @@ data class Car(
     val make: String,
     val marketPrice: Int,
     val model: String,
-    val prosList: ArrayList<String>,
-    val consList: ArrayList<String>,
+    val prosList: List<String>,
+    val consList: List<String>,
     val rating: Int
 )

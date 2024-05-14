@@ -4,6 +4,9 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.exam.core.data.Car
 
+/**
+ * Defines a car entity
+ */
 @Entity(tableName = "cars")
 data class CarEntity(
     @PrimaryKey(autoGenerate = true)
@@ -12,8 +15,8 @@ data class CarEntity(
     val make: String,
     val marketPrice: Int,
     val model: String,
-    val prosList: ArrayList<String>,
-    val consList: ArrayList<String>,
+    val prosList: List<String>,
+    val consList: List<String>,
     val rating: Int
 ) {
     companion object {
