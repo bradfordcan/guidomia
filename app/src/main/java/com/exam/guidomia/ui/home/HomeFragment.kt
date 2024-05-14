@@ -4,11 +4,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.exam.guidomia.R
 import com.exam.guidomia.databinding.FragmentHomeBinding
+
 
 class HomeFragment : Fragment() {
 
@@ -18,6 +21,8 @@ class HomeFragment : Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
     private lateinit var homeViewModel: HomeViewModel
+
+    private val carsListAdapter = CarListAdapter(arrayListOf())
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -30,21 +35,25 @@ class HomeFragment : Fragment() {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textHome
-        homeViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
+        val itemDecorator = DividerItemDecoration(context, DividerItemDecoration.VERTICAL)
+        itemDecorator.setDrawable(ContextCompat.getDrawable(binding.root.context, R.drawable.divider_layer)!!)
+
+        binding.expandableList.apply {
+            layoutManager = LinearLayoutManager(context)
+            adapter = carsListAdapter
+            addItemDecoration(itemDecorator)
         }
 
         observeCarsData()
-
-
         return root
     }
 
     private fun observeCarsData() {
         homeViewModel.cars.observe(viewLifecycleOwner) { cars ->
-            //Toast.makeText(binding.root.context, cars.toString(), Toast.LENGTH_LONG).show()
-            binding.textHome.text = cars.toString()
+            cars.mapIndexed { index, car ->
+                car.id = index.toLong()
+            }
+            carsListAdapter.updateCars(cars)
         }
     }
 
@@ -58,3 +67,4 @@ class HomeFragment : Fragment() {
         _binding = null
     }
 }
+

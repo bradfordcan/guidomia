@@ -1,7 +1,7 @@
 package com.exam.core.data
 
 data class Car(
-    val id: Long,
+    var id: Long,
     val customerPrice: Int,
     val make: String,
     val marketPrice: Int,

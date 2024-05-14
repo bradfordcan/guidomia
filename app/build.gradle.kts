@@ -65,4 +65,6 @@ dependencies {
     ksp (libs.dagger.compiler)
 
     implementation(libs.gson)
+
+    implementation (libs.androidx.cardView)
 }
