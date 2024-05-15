@@ -35,7 +35,7 @@
                 layout="@layout/layout_car_filter"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="16dp" />
+                android:layout_margin="@dimen/padding_medium" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/expandableList"

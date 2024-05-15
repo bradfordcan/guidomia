@@ -22,6 +22,7 @@ import com.exam.guidomia.databinding.CardCarBinding
 class CarListAdapter(private var cars: ArrayList<Car>) :
     RecyclerView.Adapter<CarListAdapter.CarViewHolder>() {
 
+    // keep a copy of the cars data to be used in filter
     var carsCopy = arrayListOf<Car>()
 
     inner class CarViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -85,11 +86,6 @@ class CarListAdapter(private var cars: ArrayList<Car>) :
                 }
             }
 
-            /*car.consList.forEach {
-                textView.text = it
-                layoutCons.addView(layoutBullet)
-            }*/
-
             card.setOnClickListener {
                 expand(position)
                 if (collapsibleView.visibility == View.VISIBLE) {
@@ -129,9 +125,6 @@ class CarListAdapter(private var cars: ArrayList<Car>) :
                     filteredList.addAll(carsCopy)
                 } else {
                     carsCopy.forEach { car ->
-                        // make is empty, model
-                        // model is empty, make
-                        // make and model is empty, display all
                         if (filterMake.isEmpty() && filterModel.isNotEmpty()) {
                             if (car.model.lowercase().contains(filterModel)) {
                                 filteredList.add(car)

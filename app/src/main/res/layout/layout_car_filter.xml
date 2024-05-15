@@ -5,16 +5,16 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/background_dark_gray_rounded"
-    android:padding="8dp">
+    android:padding="@dimen/padding_small">
 
     <TextView
         android:id="@+id/name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingStart="8dp"
+        android:paddingStart="@dimen/padding_small"
         android:text="@string/label_filters"
         android:textColor="@color/white"
-        android:textSize="22sp"
+        android:textSize="@dimen/text_big"
         tools:ignore="RtlSymmetry" />
 
     <com.google.android.material.textfield.TextInputLayout
@@ -22,7 +22,7 @@
         style="@style/ExposedDropdownMenu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
+        android:layout_margin="@dimen/padding_small"
         android:background="@color/white"
         app:layout_constraintTop_toBottomOf="@+id/name">
 
@@ -40,11 +40,11 @@
         style="@style/ExposedDropdownMenu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
+        android:layout_margin="@dimen/padding_small"
         android:background="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/layout_filter_make"
-        tools:layout_editor_absoluteX="8dp">
+        tools:layout_editor_absoluteX="@dimen/padding_small">
 
         <com.google.android.material.textfield.MaterialAutoCompleteTextView
             android:id="@+id/filter_model"

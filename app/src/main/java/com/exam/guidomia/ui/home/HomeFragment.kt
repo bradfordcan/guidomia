@@ -70,8 +70,8 @@ class HomeFragment : Fragment() {
             val makes = makeDefault + cars.map { it.make }
             val models = modelDefault + cars.map { it.model }
 
-
             // update filter layout
+            // populate make filter data
             val makeAdapter = ArrayAdapter(
                 binding.root.context,
                 android.R.layout.simple_dropdown_item_1line,
@@ -84,6 +84,7 @@ class HomeFragment : Fragment() {
                 carsListAdapter.getFilter().filter("${filterMake}-${filterModel}")
             }
 
+            // populate model filter data
             val modelAdapter = ArrayAdapter(
                 binding.root.context,
                 android.R.layout.simple_dropdown_item_1line,
