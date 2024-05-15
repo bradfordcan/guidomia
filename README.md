@@ -5,6 +5,7 @@ An Android mobile application for loading list of cars
 ![kotlin](https://img.shields.io/badge/kotlin-1.9.0-green) ![gson](https://img.shields.io/badge/gson-2.10.1-orange) ![preferences](https://img.shields.io/badge/preferences-1.1.1-blue) ![room](https://img.shields.io/badge/room-2.6.1-red) ![dagger](https://img.shields.io/badge/dagger-2.48.1-yellow)
 
 | name | version |
+| ------ | ------ |
 | agp | 8.3.2 |
 | minSdk | 24 |
 | targetSdk | 34 |
