@@ -114,15 +114,12 @@
                         android:textColor="@color/dark_gray"
                         android:textSize="22sp" />
 
-                    <TextView
-                        android:id="@+id/textPros"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:drawablePadding="8dp"
-                        android:includeFontPadding="false"
-                        android:textColor="#000000"
-                        android:textSize="14sp"
-                        tools:text="\n\u25CF 4 wheel drive\n\n\u25CF Disk brake\n\n\u25CF Good sound system" />
+                    <LinearLayout
+                        android:id="@+id/layoutPros"
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                    </LinearLayout>
 
                 </LinearLayout>
 
@@ -142,15 +139,12 @@
                         android:textColor="@color/dark_gray"
                         android:textSize="22sp" />
 
-                    <TextView
-                        android:id="@+id/textCons"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:drawablePadding="8dp"
-                        android:includeFontPadding="false"
-                        android:textColor="#000000"
-                        android:textSize="14sp"
-                        tools:text="\n\u25CF Bad direction" />
+                    <LinearLayout
+                        android:id="@+id/layoutCons"
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                    </LinearLayout>
 
                 </LinearLayout>
 

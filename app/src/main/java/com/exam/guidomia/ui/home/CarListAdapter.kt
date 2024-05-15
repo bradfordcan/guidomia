@@ -1,16 +1,16 @@
 package com.exam.guidomia.ui.home
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.graphics.drawable.Drawable
 import android.icu.text.NumberFormat
 import android.icu.util.Currency
-import android.text.SpannableString
-import android.text.style.BulletSpan
 import android.transition.AutoTransition
 import android.transition.TransitionManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.exam.core.data.Car
@@ -32,8 +32,8 @@ class CarListAdapter(private var cars: ArrayList<Car>): RecyclerView.Adapter<Car
         // card view
         private val card = binding.baseCardView
         private val collapsibleView = binding.hiddenView
-        private val textPros = binding.textPros
-        private val textCons = binding.textCons
+        private val layoutPros = binding.layoutPros
+        private val layoutCons = binding.layoutCons
 
         @SuppressLint("SetTextI18n", "DiscouragedApi")
         fun bind(car: Car) {
@@ -51,8 +51,31 @@ class CarListAdapter(private var cars: ArrayList<Car>): RecyclerView.Adapter<Car
             price.text = format.format(car.marketPrice)
             rating.rating = car.rating.toFloat()
 
-            textPros.text = car.prosList.toBulletedList()
-            textCons.text = car.consList.toBulletedList()
+            car.prosList.forEach {
+                if(it.isNotEmpty()) {
+                    val inflater: LayoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+                    val layoutBullet = inflater.inflate(R.layout.layout_bullet_point_text,null)
+                    val textView = layoutBullet.findViewById<TextView>(R.id.textBullet)
+                    textView.text = it
+                    layoutPros.addView(layoutBullet)
+                }
+            }
+
+            car.consList.forEach {
+                if(it.isNotEmpty()) {
+                    val inflater: LayoutInflater =
+                        context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+                    val layoutBullet = inflater.inflate(R.layout.layout_bullet_point_text, null)
+                    val textView = layoutBullet.findViewById<TextView>(R.id.textBullet)
+                    textView.text = it
+                    layoutCons.addView(layoutBullet)
+                }
+            }
+
+            /*car.consList.forEach {
+                textView.text = it
+                layoutCons.addView(layoutBullet)
+            }*/
 
             card.setOnClickListener {
                 if(collapsibleView.visibility == View.VISIBLE) {
@@ -61,18 +84,6 @@ class CarListAdapter(private var cars: ArrayList<Car>): RecyclerView.Adapter<Car
                 } else {
                     TransitionManager.beginDelayedTransition(card, AutoTransition())
                     collapsibleView.visibility = View.VISIBLE
-                }
-            }
-        }
-
-        // solution to dynamically add bullet points using TextView
-        // source: https://stackoverflow.com/questions/4992794/how-to-add-bulleted-list-to-android-application
-        private fun List<String>.toBulletedList(): CharSequence {
-            return SpannableString(this.joinToString("\n")).apply {
-                this@toBulletedList.foldIndexed(0) { index, acc, span ->
-                    val end = acc + span.length + if (index != this@toBulletedList.size - 1) 1 else 0
-                    this.setSpan(BulletSpan(16), acc, end, 0)
-                    end
                 }
             }
         }
