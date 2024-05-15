@@ -67,4 +67,6 @@ dependencies {
     implementation(libs.gson)
 
     implementation (libs.androidx.cardView)
+
+    implementation (libs.androidx.preference.ktx)
 }
