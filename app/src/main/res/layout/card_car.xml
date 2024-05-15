@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:paddingTop="@dimen/padding_small"
     android:paddingBottom="@dimen/padding_small">
 
     <androidx.cardview.widget.CardView
@@ -30,50 +31,56 @@
                     android:id="@+id/carImage"
                     android:layout_width="150dp"
                     android:layout_height="90dp"
-                    android:contentDescription="@null"
                     android:adjustViewBounds="true"
                     android:clipToOutline="true"
+                    android:contentDescription="@null"
                     android:scaleType="fitXY"
                     android:src="@drawable/image0"
+                    app:layout_constraintBottom_toBottomOf="@+id/constraintLayout"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/constraintLayout"
                     tools:targetApi="s" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/constraintLayout"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/padding_medium"
-                    app:layout_constraintBottom_toBottomOf="@+id/carImage"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/carImage"
-                    app:layout_constraintTop_toTopOf="@+id/carImage">
+                    app:layout_constraintTop_toTopOf="parent">
 
                     <TextView
                         android:id="@+id/name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        tools:text="Alpine Roadster"
                         android:textColor="@color/dark_gray"
                         android:textSize="@dimen/text_big"
                         android:textStyle="bold"
-                        tools:layout_editor_absoluteY="0dp" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:text="Land Rover Range Rover" />
 
                     <TextView
                         android:id="@+id/price"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        tools:text="Price: 120k"
                         android:textColor="@color/dark_gray"
-                        android:textSize="@dimen/text_medium"
+                        android:textSize="@dimen/text_medium_2"
                         android:textStyle="bold"
-                        app:layout_constraintTop_toBottomOf="@+id/name" />
+                        app:layout_constraintTop_toBottomOf="@+id/name"
+                        tools:text="Price: 120k" />
 
                     <androidx.appcompat.widget.AppCompatRatingBar
                         android:id="@+id/rating"
-                        style="@android:style/Widget.DeviceDefault.RatingBar.Small"
+                        style="?android:attr/ratingBarStyleIndicator"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:numStars="5"
                         android:progressTint="@color/orange"
-                        android:rating="3"
+                        android:rating="5"
+                        android:scaleX="0.6"
+                        android:scaleY="0.6"
                         android:transformPivotX="0dp"
                         android:transformPivotY="0dp"
                         app:layout_constraintTop_toBottomOf="@+id/price" />
@@ -107,14 +114,14 @@
                         android:layout_height="wrap_content"
                         android:text="@string/text_pros"
                         android:textColor="@color/dark_gray"
-                        android:textSize="@dimen/text_big" />
+                        android:textSize="@dimen/text_big"
+                        android:textStyle="bold" />
 
                     <LinearLayout
                         android:id="@+id/layoutPros"
-                        android:orientation="vertical"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-                    </LinearLayout>
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical" />
 
                 </LinearLayout>
 
@@ -133,14 +140,14 @@
                         android:layout_height="wrap_content"
                         android:text="@string/text_cons"
                         android:textColor="@color/dark_gray"
-                        android:textSize="@dimen/text_big" />
+                        android:textSize="@dimen/text_big"
+                        android:textStyle="bold" />
 
                     <LinearLayout
                         android:id="@+id/layoutCons"
-                        android:orientation="vertical"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-                    </LinearLayout>
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical" />
 
                 </LinearLayout>
 

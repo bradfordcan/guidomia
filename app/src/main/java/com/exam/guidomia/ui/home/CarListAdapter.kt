@@ -3,8 +3,7 @@ package com.exam.guidomia.ui.home
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.drawable.Drawable
-import android.icu.text.NumberFormat
-import android.icu.util.Currency
+import android.os.Build
 import android.transition.AutoTransition
 import android.transition.TransitionManager
 import android.view.LayoutInflater
@@ -12,14 +11,20 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.exam.core.data.Car
 import com.exam.guidomia.R
 import com.exam.guidomia.databinding.CardCarBinding
+import com.exam.guidomia.util.DEFAULT_FILTER_MAKE
+import com.exam.guidomia.util.DEFAULT_FILTER_MODEL
+import com.exam.guidomia.util.NO_CONS_ADDED
+import com.exam.guidomia.util.NO_PROS_ADDED
+import com.exam.guidomia.util.shortenPrice
 
 
-class CarListAdapter(private var cars: ArrayList<Car>) :
+class CarListAdapter(private var cars: ArrayList<Car>, val listUpdate: ListUpdate) :
     RecyclerView.Adapter<CarListAdapter.CarViewHolder>() {
 
     // keep a copy of the cars data to be used in filter
@@ -40,6 +45,7 @@ class CarListAdapter(private var cars: ArrayList<Car>) :
         private val layoutPros = binding.layoutPros
         private val layoutCons = binding.layoutCons
 
+        @RequiresApi(Build.VERSION_CODES.R)
         @SuppressLint("SetTextI18n", "DiscouragedApi")
         fun bind(car: Car, position: Int, expand: (position: Int) -> Unit) {
             val context = binding.root.context
@@ -56,34 +62,50 @@ class CarListAdapter(private var cars: ArrayList<Car>) :
                 collapsibleView.visibility = View.GONE
             }
 
-            val format: NumberFormat = NumberFormat.getCurrencyInstance()
-            format.setMaximumFractionDigits(0)
-            format.currency = Currency.getInstance("USD")
-            price.text = format.format(car.marketPrice)
+            price.text = "Price: ${shortenPrice(car.marketPrice.toLong())}"
             rating.rating = car.rating.toFloat()
 
+            val allPros = arrayListOf<String>()
+            val allCons = arrayListOf<String>()
+
+            allPros.addAll(car.prosList)
+            allCons.addAll(car.consList)
+
+            if (car.prosList.none { it.isNotEmpty() }) {
+                allPros.addAll(listOf(NO_PROS_ADDED))
+            }
+            if (car.consList.none { it.isNotEmpty() }) {
+                allCons.addAll(listOf(NO_CONS_ADDED))
+            }
+
             layoutPros.removeAllViews()
-            car.prosList.forEach {
-                if (it.isNotEmpty()) {
-                    val inflater: LayoutInflater =
-                        context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-                    val layoutBullet = inflater.inflate(R.layout.layout_bullet_point_text, null)
-                    val textView = layoutBullet.findViewById<TextView>(R.id.textBullet)
-                    textView.text = it
-                    layoutPros.addView(layoutBullet)
+            allPros.filter { it.isNotEmpty() }.forEach {
+                val inflater: LayoutInflater =
+                    context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+                val itemLayout = if(it.contentEquals(NO_PROS_ADDED)) {
+                    R.layout.layout_empty_bullet_point
+                } else {
+                    R.layout.layout_bullet_point_text
                 }
+                val layoutBullet = inflater.inflate(itemLayout, null)
+                val textView = layoutBullet.findViewById<TextView>(R.id.textBullet)
+                textView.text = it
+                layoutPros.addView(layoutBullet)
             }
 
             layoutCons.removeAllViews()
-            car.consList.forEach {
-                if (it.isNotEmpty()) {
-                    val inflater: LayoutInflater =
-                        context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-                    val layoutBullet = inflater.inflate(R.layout.layout_bullet_point_text, null)
-                    val textView = layoutBullet.findViewById<TextView>(R.id.textBullet)
-                    textView.text = it
-                    layoutCons.addView(layoutBullet)
+            allCons.filter { it.isNotEmpty() }.forEach {
+                val inflater: LayoutInflater =
+                    context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+                val itemLayout = if(it.contentEquals(NO_CONS_ADDED)) {
+                    R.layout.layout_empty_bullet_point
+                } else {
+                    R.layout.layout_bullet_point_text
                 }
+                val layoutBullet =  inflater.inflate(itemLayout, null)
+                val textView = layoutBullet.findViewById<TextView>(R.id.textBullet)
+                textView.text = it
+                layoutCons.addView(layoutBullet)
             }
 
             card.setOnClickListener {
@@ -108,11 +130,11 @@ class CarListAdapter(private var cars: ArrayList<Car>) :
             var filterMake = filters[0]
             var filterModel = filters[1]
 
-            if (filterMake.lowercase().contains("any make")) {
+            if (filterMake.lowercase().contains(DEFAULT_FILTER_MAKE.lowercase())) {
                 filterMake = ""
             }
 
-            if (filterModel.lowercase().contains("any model")) {
+            if (filterModel.lowercase().contains(DEFAULT_FILTER_MODEL.lowercase())) {
                 filterModel = ""
             }
 
@@ -148,12 +170,15 @@ class CarListAdapter(private var cars: ArrayList<Car>) :
             return results
         }
 
+        @SuppressLint("NotifyDataSetChanged")
         override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
             if (results != null && (results.values as ArrayList<Car>).size > 0) {
                 cars.clear()
                 cars.addAll(results.values as MutableList<Car>)
+                listUpdate.onUpdateList(false)
             } else {
                 cars.clear()
+                listUpdate.onUpdateList(true)
             }
             notifyDataSetChanged()
         }
@@ -172,7 +197,7 @@ class CarListAdapter(private var cars: ArrayList<Car>) :
         // make a copy for filtering
         carsCopy.clear()
         carsCopy.addAll(newCars)
-
+        listUpdate.onUpdateList(false)
         notifyDataSetChanged()
     }
 
@@ -183,6 +208,7 @@ class CarListAdapter(private var cars: ArrayList<Car>) :
 
     override fun getItemCount(): Int = cars.size
 
+    @RequiresApi(Build.VERSION_CODES.R)
     @SuppressLint("NotifyDataSetChanged")
     override fun onBindViewHolder(holder: CarViewHolder, position: Int) {
         holder.bind(cars[position], position) { positionClicked ->

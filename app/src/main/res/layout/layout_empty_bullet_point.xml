@@ -10,15 +10,14 @@
         android:id="@+id/textBullet"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:drawableStart="@drawable/shape_bullet_point"
         android:drawablePadding="@dimen/padding_medium"
         android:includeFontPadding="false"
-        android:textColor="@color/black"
-        android:textStyle="bold"
+        android:textColor="@color/black_alpha"
+        android:textStyle="italic"
         android:textSize="@dimen/text_medium"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         tools:ignore="MissingConstraints,UseCompatTextViewDrawableXml"
-        tools:text="25CF Bad direction" />
+        tools:text="No item added" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

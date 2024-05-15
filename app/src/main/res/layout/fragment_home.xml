@@ -21,14 +21,49 @@
 
             <!-- scrollable views here -->
 
-            <ImageView
-                android:id="@+id/banner"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="300dp"
-                android:contentDescription="@null"
-                android:scaleType="centerCrop"
-                android:src="@drawable/tacoma"
-                tools:targetApi="s" />
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/banner"
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp"
+                    android:contentDescription="@null"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/tacoma"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:targetApi="s" />
+
+                <TextView
+                    android:id="@+id/textBanner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:gravity="bottom"
+                    android:includeFontPadding="false"
+                    android:text="@string/text_banner"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_v_big"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toTopOf="@+id/textBannerSub"
+                    app:layout_constraintStart_toStartOf="@+id/textBannerSub"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/textBannerSub"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/padding_medium"
+                    android:includeFontPadding="false"
+                    android:paddingBottom="@dimen/padding_big"
+                    android:text="@string/text_banner_sub"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_big"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="@+id/banner"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <include
                 android:id="@+id/car_filter"
@@ -43,6 +78,17 @@
                 android:layout_height="match_parent"
                 android:nestedScrollingEnabled="true"
                 tools:itemCount="20" />
+
+            <TextView
+                android:id="@+id/emptyView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="@dimen/padding_medium"
+                android:layout_marginBottom="@dimen/padding_medium"
+                android:gravity="center"
+                android:text="@string/text_no_data"
+                android:visibility="gone"
+                tools:visibility="visible" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

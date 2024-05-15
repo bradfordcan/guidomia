@@ -12,9 +12,11 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.exam.guidomia.R
 import com.exam.guidomia.databinding.FragmentHomeBinding
+import com.exam.guidomia.util.DEFAULT_FILTER_MAKE
+import com.exam.guidomia.util.DEFAULT_FILTER_MODEL
 
 
-class HomeFragment : Fragment() {
+class HomeFragment : Fragment(), ListUpdate {
 
     private var _binding: FragmentHomeBinding? = null
 
@@ -23,7 +25,7 @@ class HomeFragment : Fragment() {
     private val binding get() = _binding!!
     private lateinit var homeViewModel: HomeViewModel
 
-    private val carsListAdapter = CarListAdapter(arrayListOf())
+    private val carsListAdapter = CarListAdapter(arrayListOf(), this)
 
     private var filterMake = "Any Make"
     private var filterModel = "Any Model"
@@ -64,8 +66,8 @@ class HomeFragment : Fragment() {
             }
             carsListAdapter.updateCars(cars)
 
-            val makeDefault = listOf("Any Make")
-            val modelDefault = listOf("Any Model")
+            val makeDefault = listOf(DEFAULT_FILTER_MAKE)
+            val modelDefault = listOf(DEFAULT_FILTER_MODEL)
 
             val makes = makeDefault + cars.map { it.make }
             val models = modelDefault + cars.map { it.model }
@@ -107,6 +109,16 @@ class HomeFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun onUpdateList(isEmpty: Boolean) {
+        if(isEmpty) {
+            binding.expandableList.visibility = View.GONE
+            binding.emptyView.visibility = View.VISIBLE
+        } else {
+            binding.expandableList.visibility = View.VISIBLE
+            binding.emptyView.visibility = View.GONE
+        }
     }
 }
 

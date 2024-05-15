@@ -13,4 +13,7 @@
     <string name="text_pros">Pros:</string>
     <string name="text_cons">Cons:</string>
     <string name="label_filters">Filters</string>
+    <string name="text_banner">Tacoma 2021</string>
+    <string name="text_banner_sub">Get yours now</string>
+    <string name="text_no_data">No data available</string>
 </resources>
