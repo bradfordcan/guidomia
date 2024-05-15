@@ -76,6 +76,7 @@ class HomeFragment : Fragment() {
             binding.carFilter.filterMake.setAdapter(makeAdapter)
             binding.carFilter.filterModel.setOnItemClickListener { _, _, position, _ ->
                 filterMake = makes[position]
+                carsListAdapter.getFilter().filter("${filterMake}-${filterModel}")
             }
 
             val modelAdapter = ArrayAdapter(
@@ -86,6 +87,7 @@ class HomeFragment : Fragment() {
             binding.carFilter.filterModel.setAdapter(modelAdapter)
             binding.carFilter.filterModel.setOnItemClickListener { _, _, position, _ ->
                 filterModel = models[position]
+                carsListAdapter.getFilter().filter("${filterMake}-${filterModel}")
             }
         }
     }

@@ -10,6 +10,7 @@ import android.transition.TransitionManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Filter
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
@@ -19,6 +20,8 @@ import com.exam.guidomia.databinding.CardCarBinding
 
 
 class CarListAdapter(private var cars: ArrayList<Car>): RecyclerView.Adapter<CarListAdapter.CarViewHolder>() {
+
+    var carsCopy = arrayListOf<Car>()
 
     inner class CarViewHolder(view: View): RecyclerView.ViewHolder(view) {
         private val binding = CardCarBinding.bind(view)
@@ -98,11 +101,54 @@ class CarListAdapter(private var cars: ArrayList<Car>): RecyclerView.Adapter<Car
         }
     }
 
+    private val carsFilter = object : Filter() {
+        val filteredList: ArrayList<Car> = ArrayList()
+        override fun performFiltering(constraint: CharSequence?): FilterResults {
+            filteredList.clear()
+            if(constraint.isNullOrEmpty()) {
+                cars.clear()
+                cars.addAll(carsCopy) // copy original list
+                filteredList.addAll(cars)
+            } else {
+                val query = constraint.toString().trim().lowercase()
+                val filters = query.split("-")
+                val filterMake = filters[0]
+                val filterModel = filters[1]
+
+                cars.forEach { car ->
+                    if(car.make.lowercase().contains(filterMake) && car.model.lowercase().contains(filterModel)) {
+                        filteredList.add(car)
+                    }
+                }
+            }
+            val results = FilterResults()
+            results.values = filteredList
+            return results
+        }
+
+        override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
+            if (results != null && (results.values as ArrayList<Car>).size > 0) {
+                cars.clear()
+                cars.addAll(results.values as MutableList<Car>)
+            }
+            notifyDataSetChanged()
+        }
+    }
+
+    fun getFilter(): Filter {
+        return carsFilter
+    }
+
     @SuppressLint("NotifyDataSetChanged")
     fun updateCars(newCars: List<Car>, id: Long? = -1) {
         cars.clear()
         newCars[0].expanded = true
         cars.addAll(newCars)
+
+        // make a copy for filtering
+        carsCopy.clear()
+        carsCopy.addAll(newCars)
+
         notifyDataSetChanged()
     }
 
