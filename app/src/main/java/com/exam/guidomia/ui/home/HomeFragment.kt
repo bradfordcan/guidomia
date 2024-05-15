@@ -25,8 +25,8 @@ class HomeFragment : Fragment() {
 
     private val carsListAdapter = CarListAdapter(arrayListOf())
 
-    private var filterMake = String()
-    private var filterModel = String()
+    private var filterMake = "Any Make"
+    private var filterModel = "Any Model"
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -64,8 +64,12 @@ class HomeFragment : Fragment() {
             }
             carsListAdapter.updateCars(cars)
 
-            val makes = cars.map { it.make }
-            val models = cars.map { it.model }
+            val makeDefault = listOf("Any Make")
+            val modelDefault = listOf("Any Model")
+
+            val makes = makeDefault + cars.map { it.make }
+            val models = modelDefault + cars.map { it.model }
+
 
             // update filter layout
             val makeAdapter = ArrayAdapter(
@@ -74,7 +78,8 @@ class HomeFragment : Fragment() {
                 makes
             )
             binding.carFilter.filterMake.setAdapter(makeAdapter)
-            binding.carFilter.filterModel.setOnItemClickListener { _, _, position, _ ->
+            binding.carFilter.filterMake.setText(filterMake, false)
+            binding.carFilter.filterMake.setOnItemClickListener { _, _, position, _ ->
                 filterMake = makes[position]
                 carsListAdapter.getFilter().filter("${filterMake}-${filterModel}")
             }
@@ -85,6 +90,7 @@ class HomeFragment : Fragment() {
                 models
             )
             binding.carFilter.filterModel.setAdapter(modelAdapter)
+            binding.carFilter.filterModel.setText(filterModel, false)
             binding.carFilter.filterModel.setOnItemClickListener { _, _, position, _ ->
                 filterModel = models[position]
                 carsListAdapter.getFilter().filter("${filterMake}-${filterModel}")

@@ -19,11 +19,12 @@ import com.exam.guidomia.R
 import com.exam.guidomia.databinding.CardCarBinding
 
 
-class CarListAdapter(private var cars: ArrayList<Car>): RecyclerView.Adapter<CarListAdapter.CarViewHolder>() {
+class CarListAdapter(private var cars: ArrayList<Car>) :
+    RecyclerView.Adapter<CarListAdapter.CarViewHolder>() {
 
     var carsCopy = arrayListOf<Car>()
 
-    inner class CarViewHolder(view: View): RecyclerView.ViewHolder(view) {
+    inner class CarViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val binding = CardCarBinding.bind(view)
 
         // list item
@@ -48,7 +49,7 @@ class CarListAdapter(private var cars: ArrayList<Car>): RecyclerView.Adapter<Car
 
             name.text = "${car.make} ${car.model}"
 
-            if(car.expanded) {
+            if (car.expanded) {
                 collapsibleView.visibility = View.VISIBLE
             } else {
                 collapsibleView.visibility = View.GONE
@@ -62,9 +63,10 @@ class CarListAdapter(private var cars: ArrayList<Car>): RecyclerView.Adapter<Car
 
             layoutPros.removeAllViews()
             car.prosList.forEach {
-                if(it.isNotEmpty()) {
-                    val inflater: LayoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-                    val layoutBullet = inflater.inflate(R.layout.layout_bullet_point_text,null)
+                if (it.isNotEmpty()) {
+                    val inflater: LayoutInflater =
+                        context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+                    val layoutBullet = inflater.inflate(R.layout.layout_bullet_point_text, null)
                     val textView = layoutBullet.findViewById<TextView>(R.id.textBullet)
                     textView.text = it
                     layoutPros.addView(layoutBullet)
@@ -73,7 +75,7 @@ class CarListAdapter(private var cars: ArrayList<Car>): RecyclerView.Adapter<Car
 
             layoutCons.removeAllViews()
             car.consList.forEach {
-                if(it.isNotEmpty()) {
+                if (it.isNotEmpty()) {
                     val inflater: LayoutInflater =
                         context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
                     val layoutBullet = inflater.inflate(R.layout.layout_bullet_point_text, null)
@@ -90,7 +92,7 @@ class CarListAdapter(private var cars: ArrayList<Car>): RecyclerView.Adapter<Car
 
             card.setOnClickListener {
                 expand(position)
-                if(collapsibleView.visibility == View.VISIBLE) {
+                if (collapsibleView.visibility == View.VISIBLE) {
                     TransitionManager.beginDelayedTransition(card, AutoTransition())
                     collapsibleView.visibility = View.GONE
                 } else {
@@ -105,19 +107,46 @@ class CarListAdapter(private var cars: ArrayList<Car>): RecyclerView.Adapter<Car
         val filteredList: ArrayList<Car> = ArrayList()
         override fun performFiltering(constraint: CharSequence?): FilterResults {
             filteredList.clear()
-            if(constraint.isNullOrEmpty()) {
+            val query = constraint.toString().trim().lowercase()
+            val filters = query.split("-")
+            var filterMake = filters[0]
+            var filterModel = filters[1]
+
+            if (filterMake.lowercase().contains("any make")) {
+                filterMake = ""
+            }
+
+            if (filterModel.lowercase().contains("any model")) {
+                filterModel = ""
+            }
+
+            if (constraint.isNullOrEmpty()) {
                 cars.clear()
                 cars.addAll(carsCopy) // copy original list
                 filteredList.addAll(cars)
             } else {
-                val query = constraint.toString().trim().lowercase()
-                val filters = query.split("-")
-                val filterMake = filters[0]
-                val filterModel = filters[1]
-
-                cars.forEach { car ->
-                    if(car.make.lowercase().contains(filterMake) && car.model.lowercase().contains(filterModel)) {
-                        filteredList.add(car)
+                if (filterMake.isEmpty() && filterModel.isEmpty()) {
+                    filteredList.addAll(carsCopy)
+                } else {
+                    carsCopy.forEach { car ->
+                        // make is empty, model
+                        // model is empty, make
+                        // make and model is empty, display all
+                        if (filterMake.isEmpty() && filterModel.isNotEmpty()) {
+                            if (car.model.lowercase().contains(filterModel)) {
+                                filteredList.add(car)
+                            }
+                        } else if (filterModel.isEmpty() && filterMake.isNotEmpty()) {
+                            if (car.make.lowercase().contains(filterMake)) {
+                                filteredList.add(car)
+                            }
+                        } else {
+                            if (car.model.lowercase().contains(filterModel) && car.make.lowercase()
+                                    .contains(filterMake)
+                            ) {
+                                filteredList.add(car)
+                            }
+                        }
                     }
                 }
             }
@@ -130,6 +159,8 @@ class CarListAdapter(private var cars: ArrayList<Car>): RecyclerView.Adapter<Car
             if (results != null && (results.values as ArrayList<Car>).size > 0) {
                 cars.clear()
                 cars.addAll(results.values as MutableList<Car>)
+            } else {
+                cars.clear()
             }
             notifyDataSetChanged()
         }
@@ -152,9 +183,10 @@ class CarListAdapter(private var cars: ArrayList<Car>): RecyclerView.Adapter<Car
         notifyDataSetChanged()
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CarViewHolder = CarViewHolder(
-        LayoutInflater.from(parent.context).inflate(R.layout.card_car, parent, false)
-    )
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CarViewHolder =
+        CarViewHolder(
+            LayoutInflater.from(parent.context).inflate(R.layout.card_car, parent, false)
+        )
 
     override fun getItemCount(): Int = cars.size
 
