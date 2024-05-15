@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -23,6 +24,9 @@ class HomeFragment : Fragment() {
     private lateinit var homeViewModel: HomeViewModel
 
     private val carsListAdapter = CarListAdapter(arrayListOf())
+
+    private var filterMake = String()
+    private var filterModel = String()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -59,6 +63,30 @@ class HomeFragment : Fragment() {
                 car.id = index.toLong()
             }
             carsListAdapter.updateCars(cars)
+
+            val makes = cars.map { it.make }
+            val models = cars.map { it.model }
+
+            // update filter layout
+            val makeAdapter = ArrayAdapter(
+                binding.root.context,
+                android.R.layout.simple_dropdown_item_1line,
+                makes
+            )
+            binding.carFilter.filterMake.setAdapter(makeAdapter)
+            binding.carFilter.filterModel.setOnItemClickListener { _, _, position, _ ->
+                filterMake = makes[position]
+            }
+
+            val modelAdapter = ArrayAdapter(
+                binding.root.context,
+                android.R.layout.simple_dropdown_item_1line,
+                models
+            )
+            binding.carFilter.filterModel.setAdapter(modelAdapter)
+            binding.carFilter.filterModel.setOnItemClickListener { _, _, position, _ ->
+                filterModel = models[position]
+            }
         }
     }
 
