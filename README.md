@@ -16,6 +16,6 @@ core
 - functions as a middle layer for additional business features
 
 ## Dev Environment
-Android Studio Jellyfish | 2023.3.1
-Github Desktop
-Virtual Emulator (Android 14.0 | x86_64) API 34
+* Android Studio Jellyfish | 2023.3.1
+* Github Desktop
+* Virtual Emulator (Android 14.0 | x86_64) API 34
