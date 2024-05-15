@@ -36,7 +36,13 @@ class CarListAdapter(private var cars: ArrayList<Car>): RecyclerView.Adapter<Car
         private val layoutCons = binding.layoutCons
 
         @SuppressLint("SetTextI18n", "DiscouragedApi")
-        fun bind(car: Car) {
+        fun bind(car: Car, position: Int) {
+
+            if(position == 0) {
+                collapsibleView.visibility = View.VISIBLE
+            }
+
+
             val context = binding.root.context
             val uri = "@drawable/image${car.id}"
             val imageResource: Int = context.resources.getIdentifier(uri, null, context.packageName)
@@ -103,7 +109,7 @@ class CarListAdapter(private var cars: ArrayList<Car>): RecyclerView.Adapter<Car
     override fun getItemCount(): Int = cars.size
 
     override fun onBindViewHolder(holder: CarViewHolder, position: Int) {
-        holder.bind(cars[position])
+        holder.bind(cars[position], position)
     }
 
 
