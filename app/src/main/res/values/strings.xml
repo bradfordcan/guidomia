@@ -12,4 +12,5 @@
     <string name="menu_slideshow">Slideshow</string>
     <string name="text_pros">Pros:</string>
     <string name="text_cons">Cons:</string>
+    <string name="label_filters">Filters</string>
 </resources>

@@ -11,7 +11,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.exam.core.data.Car
@@ -19,7 +18,7 @@ import com.exam.guidomia.R
 import com.exam.guidomia.databinding.CardCarBinding
 
 
-class CarListAdapter(private var cars: ArrayList<Car>, val action: OnCardItemClick): RecyclerView.Adapter<CarListAdapter.CarViewHolder>() {
+class CarListAdapter(private var cars: ArrayList<Car>): RecyclerView.Adapter<CarListAdapter.CarViewHolder>() {
 
     inner class CarViewHolder(view: View): RecyclerView.ViewHolder(view) {
         private val binding = CardCarBinding.bind(view)

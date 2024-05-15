@@ -27,4 +27,11 @@
         <item name="android:minHeight">43dip</item>
         <item name="android:maxHeight">43dp</item>
     </style>
+
+    <style name="ExposedDropdownMenu" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
+        <item name="endIconTint">@color/black</item>
+        <item name="hintTextColor">@color/light_gray</item>
+        <item name="hintEnabled">false</item>
+        <item name="android:textColorHint">@color/dark_gray</item>
+    </style>
 </resources>

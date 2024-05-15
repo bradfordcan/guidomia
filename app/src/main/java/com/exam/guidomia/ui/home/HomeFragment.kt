@@ -13,7 +13,7 @@ import com.exam.guidomia.R
 import com.exam.guidomia.databinding.FragmentHomeBinding
 
 
-class HomeFragment : Fragment(), OnCardItemClick {
+class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
 
@@ -22,7 +22,7 @@ class HomeFragment : Fragment(), OnCardItemClick {
     private val binding get() = _binding!!
     private lateinit var homeViewModel: HomeViewModel
 
-    private val carsListAdapter = CarListAdapter(arrayListOf(), this)
+    private val carsListAdapter = CarListAdapter(arrayListOf())
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -36,7 +36,12 @@ class HomeFragment : Fragment(), OnCardItemClick {
         val root: View = binding.root
 
         val itemDecorator = DividerItemDecoration(context, DividerItemDecoration.VERTICAL)
-        itemDecorator.setDrawable(ContextCompat.getDrawable(binding.root.context, R.drawable.divider_layer)!!)
+        itemDecorator.setDrawable(
+            ContextCompat.getDrawable(
+                binding.root.context,
+                R.drawable.divider_layer
+            )!!
+        )
 
         binding.expandableList.apply {
             layoutManager = LinearLayoutManager(context)
@@ -65,10 +70,6 @@ class HomeFragment : Fragment(), OnCardItemClick {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    override fun onCardItemClick(id: Long) {
-        TODO("Not yet implemented")
     }
 }
 

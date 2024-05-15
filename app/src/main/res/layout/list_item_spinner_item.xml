@@ -3,20 +3,19 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:padding="8dp">
 
     <TextView
-        android:id="@+id/textBullet"
+        android:id="@+id/filter"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:drawableStart="@drawable/shape_bullet_point"
-        android:drawablePadding="8dp"
-        android:includeFontPadding="false"
-        android:textColor="#000000"
-        android:textSize="14sp"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        tools:ignore="MissingConstraints,UseCompatTextViewDrawableXml"
-        tools:text="25CF Bad direction" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Filter" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
