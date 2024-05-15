@@ -11,6 +11,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.exam.core.data.Car
@@ -18,7 +19,7 @@ import com.exam.guidomia.R
 import com.exam.guidomia.databinding.CardCarBinding
 
 
-class CarListAdapter(private var cars: ArrayList<Car>): RecyclerView.Adapter<CarListAdapter.CarViewHolder>() {
+class CarListAdapter(private var cars: ArrayList<Car>, val action: OnCardItemClick): RecyclerView.Adapter<CarListAdapter.CarViewHolder>() {
 
     inner class CarViewHolder(view: View): RecyclerView.ViewHolder(view) {
         private val binding = CardCarBinding.bind(view)
@@ -36,13 +37,7 @@ class CarListAdapter(private var cars: ArrayList<Car>): RecyclerView.Adapter<Car
         private val layoutCons = binding.layoutCons
 
         @SuppressLint("SetTextI18n", "DiscouragedApi")
-        fun bind(car: Car, position: Int) {
-
-            if(position == 0) {
-                collapsibleView.visibility = View.VISIBLE
-            }
-
-
+        fun bind(car: Car, position: Int, expand: (position: Int) -> Unit) {
             val context = binding.root.context
             val uri = "@drawable/image${car.id}"
             val imageResource: Int = context.resources.getIdentifier(uri, null, context.packageName)
@@ -51,12 +46,19 @@ class CarListAdapter(private var cars: ArrayList<Car>): RecyclerView.Adapter<Car
 
             name.text = "${car.make} ${car.model}"
 
+            if(car.expanded) {
+                collapsibleView.visibility = View.VISIBLE
+            } else {
+                collapsibleView.visibility = View.GONE
+            }
+
             val format: NumberFormat = NumberFormat.getCurrencyInstance()
             format.setMaximumFractionDigits(0)
             format.currency = Currency.getInstance("USD")
             price.text = format.format(car.marketPrice)
             rating.rating = car.rating.toFloat()
 
+            layoutPros.removeAllViews()
             car.prosList.forEach {
                 if(it.isNotEmpty()) {
                     val inflater: LayoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
@@ -67,6 +69,7 @@ class CarListAdapter(private var cars: ArrayList<Car>): RecyclerView.Adapter<Car
                 }
             }
 
+            layoutCons.removeAllViews()
             car.consList.forEach {
                 if(it.isNotEmpty()) {
                     val inflater: LayoutInflater =
@@ -84,6 +87,7 @@ class CarListAdapter(private var cars: ArrayList<Car>): RecyclerView.Adapter<Car
             }*/
 
             card.setOnClickListener {
+                expand(position)
                 if(collapsibleView.visibility == View.VISIBLE) {
                     TransitionManager.beginDelayedTransition(card, AutoTransition())
                     collapsibleView.visibility = View.GONE
@@ -96,8 +100,9 @@ class CarListAdapter(private var cars: ArrayList<Car>): RecyclerView.Adapter<Car
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun updateCars(newCars: List<Car>) {
+    fun updateCars(newCars: List<Car>, id: Long? = -1) {
         cars.clear()
+        newCars[0].expanded = true
         cars.addAll(newCars)
         notifyDataSetChanged()
     }
@@ -108,9 +113,17 @@ class CarListAdapter(private var cars: ArrayList<Car>): RecyclerView.Adapter<Car
 
     override fun getItemCount(): Int = cars.size
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onBindViewHolder(holder: CarViewHolder, position: Int) {
-        holder.bind(cars[position], position)
+        holder.bind(cars[position], position) { positionClicked ->
+            // reset
+            cars.forEach {
+                it.expanded = false
+            }
+            notifyDataSetChanged()
+            cars[positionClicked].expanded = true
+            notifyItemChanged(positionClicked)
+        }
     }
-
 
 }

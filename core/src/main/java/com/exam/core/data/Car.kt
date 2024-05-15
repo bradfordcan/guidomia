@@ -8,5 +8,7 @@ data class Car(
     val model: String,
     val prosList: List<String>,
     val consList: List<String>,
-    val rating: Int
+    val rating: Int,
+    // State of the item
+    var expanded: Boolean = false
 )
