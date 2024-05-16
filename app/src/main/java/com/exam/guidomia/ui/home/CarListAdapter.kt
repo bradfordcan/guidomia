@@ -148,16 +148,16 @@ class CarListAdapter(private var cars: ArrayList<Car>, val listUpdate: ListUpdat
                 } else {
                     carsCopy.forEach { car ->
                         if (filterMake.isEmpty() && filterModel.isNotEmpty()) {
-                            if (car.model.lowercase().contains(filterModel)) {
+                            if (car.model.lowercase().contains(filterModel.lowercase())) {
                                 filteredList.add(car)
                             }
                         } else if (filterModel.isEmpty() && filterMake.isNotEmpty()) {
-                            if (car.make.lowercase().contains(filterMake)) {
+                            if (car.make.lowercase().contains(filterMake.lowercase())) {
                                 filteredList.add(car)
                             }
                         } else {
-                            if (car.model.lowercase().contains(filterModel) && car.make.lowercase()
-                                    .contains(filterMake)
+                            if (car.model.lowercase().contains(filterModel.lowercase()) && car.make.lowercase()
+                                    .contains(filterMake.lowercase())
                             ) {
                                 filteredList.add(car)
                             }
